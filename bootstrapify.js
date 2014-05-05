@@ -139,7 +139,7 @@ StyleGenerator.prototype = {
     }
 };
 
-//
+// StyleGenerator child object for sites which host their own CSS
 var HostedStyleGenerator = function(){
     StyleGenerator.call(this);
 
@@ -163,7 +163,6 @@ var HostedStyleGenerator = function(){
     ];
 };
 
-// StyleGenerator child object for sites which host their own CSS
 HostedStyleGenerator.prototype = Object.create(StyleGenerator.prototype);
 HostedStyleGenerator.prototype.constructor = HostedStyleGenerator;
 
@@ -364,12 +363,14 @@ ExternalStyleGenerator.prototype.addCustomStyles = function() {
 };
 
 
-// We will assume that even one locally hosted stylesheet is sufficient
+// Determine whether CSS is hosted or external, and based on that,
+// instantiate the proper StyleGenerator object, and run generate styles method
 (function() {
     var generator, hosted = false;
     var domain = window.location.host;
     var stylesheets = document.styleSheets;
 
+    //  We will assume that even one locally hosted stylesheet is sufficient
     for (var i = 0; i < stylesheets.length; i++) {
         if (stylesheets[i].href && stylesheets[i].href.indexOf(domain) >= 0){
             hosted = true;
